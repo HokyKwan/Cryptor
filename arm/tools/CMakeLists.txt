@@ -1,0 +1,12 @@
+SET(PROJ_NAME cryptor_test)
+
+ADD_EXECUTABLE(${PROJ_NAME} main.cc)
+
+TARGET_INCLUDE_DIRECTORIES(${PROJ_NAME} PUBLIC
+  /usr/local/include
+)
+
+TARGET_LINK_LIBRARIES(${PROJ_NAME} PUBLIC
+  cryptor
+  cryptopp
+)
