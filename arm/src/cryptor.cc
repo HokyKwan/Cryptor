@@ -21,18 +21,18 @@ std::string AESEncrypt(const std::string& plain, std::string& keyStr)
     }
     memcpy(key, keyStr.data(), keyStr.length());
 
-	try {
-		CryptoPP::CBC_Mode<CryptoPP::AES>::Encryption encryptor(key, CryptoPP::AES::MAX_KEYLENGTH, iv);
-		CryptoPP::StreamTransformationFilter stfEncryptor(encryptor,
-			new CryptoPP::StringSink(cipher),
-			CryptoPP::BlockPaddingSchemeDef::ZEROS_PADDING);
-		stfEncryptor.Put(reinterpret_cast<const unsigned char*>(plain.c_str()), plain.length() + 1);
-		stfEncryptor.MessageEnd();
-	} catch (std::exception e) {
-		std::cout << e.what() << std::endl;
-	}
+    try {
+        CryptoPP::CBC_Mode<CryptoPP::AES>::Encryption encryptor(key, CryptoPP::AES::MAX_KEYLENGTH, iv);
+        CryptoPP::StreamTransformationFilter stfEncryptor(encryptor,
+            new CryptoPP::StringSink(cipher),
+            CryptoPP::BlockPaddingSchemeDef::ZEROS_PADDING);
+        stfEncryptor.Put(reinterpret_cast<const unsigned char*>(plain.c_str()), plain.length() + 1);
+        stfEncryptor.MessageEnd();
+    } catch (std::exception e) {
+        std::cout << e.what() << std::endl;
+    }
 
-	std::string cipherWithIV(reinterpret_cast<char*>(iv), sizeof(iv));
+    std::string cipherWithIV(reinterpret_cast<char*>(iv), sizeof(iv));
     cipherWithIV += cipher;
 
     //Will Stuck: CryptoPP::StringSource encoder(cipherWithIV, true, new CryptoPP::HexEncoder(new CryptoPP::StringSink(cipherEncoded)));
@@ -62,15 +62,15 @@ std::string AESDecrypt(std::string& cipher, std::string& keyStr)
     cipherWithoutIV = cipherDecoded.substr(16);
 
     try {
-		CryptoPP::CBC_Mode<CryptoPP::AES>::Decryption decryptor(key, CryptoPP::AES::MAX_KEYLENGTH, iv);
-		CryptoPP::StreamTransformationFilter stfDecryptor(decryptor,
-			new CryptoPP::StringSink(decrypted),
+        CryptoPP::CBC_Mode<CryptoPP::AES>::Decryption decryptor(key, CryptoPP::AES::MAX_KEYLENGTH, iv);
+        CryptoPP::StreamTransformationFilter stfDecryptor(decryptor,
+            new CryptoPP::StringSink(decrypted),
             CryptoPP::BlockPaddingSchemeDef::ZEROS_PADDING);
-		stfDecryptor.Put(reinterpret_cast<const unsigned char*>(cipherWithoutIV.c_str()), cipherWithoutIV.length());
-		stfDecryptor.MessageEnd();
-	} catch (std::exception e) {
-		std::cout << e.what() << std::endl;
-	}
+        stfDecryptor.Put(reinterpret_cast<const unsigned char*>(cipherWithoutIV.c_str()), cipherWithoutIV.length());
+        stfDecryptor.MessageEnd();
+    } catch (std::exception e) {
+        std::cout << e.what() << std::endl;
+    }
 
     return decrypted;
 }
