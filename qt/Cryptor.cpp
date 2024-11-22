@@ -1,12 +1,14 @@
 /**********************************
  *
- *       AES Cryptor For QT
+ *       Cryptor For QT
  *
  * Author: HokyKwan
  * date  : 10/27 2023
  *
 ***********************************/
 #include "Cryptor.h"
+#include <QFile>
+#include <QCryptographicHash>
 #include <QRandomGenerator>
 #include "QAESEncryption.h"
 
@@ -42,3 +44,19 @@ QByteArray Cryptor::Decrypt(const QByteArray& cipherHexed)
 
     return QAESEncryption::RemovePadding(decrypt);
 }
+
+QString Cryptor::MD5Encrypt(const QString& path)
+{
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly)) {
+        return "";
+    }
+
+    QCryptographicHash MD5Hash(QCryptographicHash::Md5);
+    if (!MD5Hash.addData(&file)) {
+        return "";
+    }
+
+    return MD5Hash.result().toHex();
+}
+

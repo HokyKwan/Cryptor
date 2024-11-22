@@ -22,4 +22,7 @@ void CryptoFunc(std::string &plain)
 
     std::string decrypt = AESDecrypt(cipher, key);
     std::cout << "Decrypt: " << decrypt << std::endl;
+
+    std::string path = "test_file";
+    std::cout << MD5Encrypt(path) << std::endl;
 }

@@ -1,6 +1,6 @@
 /**********************************
  *
- *       AES Cryptor For QT
+ *       Cryptor For QT
  *
  * Author: HokyKwan
  * date  : 10/27 2023
@@ -19,6 +19,7 @@ public:
 
     QByteArray Encrypt(const QByteArray& plain);
     QByteArray Decrypt(const QByteArray& cipher);
+    QString MD5Encrypt(const QString& path);
 
 private:
     QByteArray key_;

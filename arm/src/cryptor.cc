@@ -1,9 +1,14 @@
+#define CRYPTOPP_ENABLE_NAMESPACE_WEAK 1
+
 #include "cryptor.h"
 #include <cryptopp/aes.h>
 #include <cryptopp/modes.h>
 #include <cryptopp/filters.h>
 #include <cryptopp/osrng.h>
 #include <cryptopp/hex.h>
+
+#include <cryptopp/md5.h>
+#include <cryptopp/files.h>
 
 #include <stdlib.h> 
 #include <time.h> 
@@ -75,3 +80,19 @@ std::string AESDecrypt(std::string& cipher, std::string& keyStr)
     return decrypted;
 }
 
+std::string MD5Encrypt(const std::string& path)
+{
+    std::string MD5Hash;
+
+    try {
+        CryptoPP::Weak1::MD5 MD;
+        CryptoPP::FileSource(path.c_str(), true,
+            new CryptoPP::HashFilter(MD,
+            new CryptoPP::HexEncoder(
+            new CryptoPP::StringSink(MD5Hash))));
+    } catch (std::exception e) {
+        std::cout << e.what() << std::endl;
+    }
+
+    return MD5Hash;
+}
